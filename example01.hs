@@ -9,7 +9,7 @@ sumAndSquares = do
     -- Filter number divisible by 3 and 5 using list comprehension
 
     let divisableBy3And5 = [x | x <- numbers, x `mod` 3 == 0 ||  x `mod` 5 == 0]
-    -- [expression | variable <- list ,condition1, condition2,...]
+    -- [expression | variable <- list, condition1, condition2,...]
     putStrLn $ "Numbers divisible by 3 or 5: " ++ show divisableBy3And5
 
     -- Compute sum of divisible numbers
