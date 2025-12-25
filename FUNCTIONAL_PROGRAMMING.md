@@ -773,3 +773,254 @@ Anyone can erase or overwrite → chaos
 ### Immutable = Printed Document
 
 Everyone reads their copy → safe
+
+## Functional Programming (FP) vs Object-Oriented Programming (OOP)
+
+
+| Aspect               | Object-Oriented Programming (OOP)        | Functional Programming (FP)                   |
+| -------------------- | ---------------------------------------- | --------------------------------------------- |
+| Core idea            | Programs built from**objects**           | Programs built from**functions**              |
+| Focus                | **Encapsulating data + behavior**        | **Transforming data using functions**         |
+| State                | **Mutable state**                        | **Immutable state**                           |
+| Data handling        | Data is**changed inside objects**        | Data is**never changed**, only transformed    |
+| Side effects         | Common and expected                      | Avoided or isolated                           |
+| Functions            | Methods tied to objects                  | First-class, standalone values                |
+| Polymorphism         | Via**inheritance & method overriding**   | Via**parametric polymorphism / type classes** |
+| Code reuse           | Inheritance                              | Function composition                          |
+| Execution order      | Often important                          | Often irrelevant for pure functions           |
+| Reasoning about code | Harder (must track state changes)        | Easier (mathematical reasoning)               |
+| Testing              | Requires object setup and state          | Simple input → output tests                  |
+| Concurrency          | Difficult (needs locks, synchronization) | Safer (no shared mutable state)               |
+| Bug sources          | State mutation, race conditions          | Logic errors, fewer state bugs                |
+| Example languages    | Java, C++, Python (OOP style)            | Haskell, Elm, Scala (FP style)                |
+| Best suited for      | UI systems, enterprise apps              | Concurrent systems, data pipelines            |
+
+---
+
+## One-Line Exam Summary
+
+> **OOP encapsulates mutable state and behavior within objects using inheritance and polymorphism, whereas FP emphasizes pure functions operating on immutable data, avoiding side effects and simplifying reasoning and concurrency.**
+
+
+
+# Higher-Order Functions (Haskell Only)
+
+## 1. Functions Are First-Class in Haskell
+
+In Haskell:
+
+* Functions are values
+* You can pass them as arguments
+* You can return them from other functions
+
+---
+
+## 2. Function as an Argument (Basic Example)
+
+```haskell
+apply :: (a -> b) -> a -> b
+apply f x = f x
+```
+
+### Explanation
+
+* `(a -> b)` is a function type
+* `apply` takes a function `f` and a value `x`
+* It applies `f` to `x`
+
+Example use:
+
+```haskell
+square :: Int -> Int
+square x = x * x
+
+apply square 5   -- 25
+```
+
+---
+
+## 3. `map` — Transforming Lists
+
+### Type Signature
+
+```haskell
+map :: (a -> b) -> [a] -> [b]
+```
+
+### Example
+
+```haskell
+square :: Int -> Int
+square x = x * x
+
+map square [1,2,3,4]
+-- [1,4,9,16]
+```
+
+### Key Idea
+
+* Takes a function
+* Applies it to **each element**
+* Returns a new list
+* Original list is unchanged (immutable)
+
+---
+
+## 4. `filter` — Selecting Elements
+
+### Type Signature
+
+```haskell
+filter :: (a -> Bool) -> [a] -> [a]
+```
+
+### Example
+
+```haskell
+isEven :: Int -> Bool
+isEven x = x `mod` 2 == 0
+
+filter isEven [1,2,3,4,5,6]
+-- [2,4,6]
+```
+
+---
+
+## 5. `foldr` — Reduce from the Right
+
+### Type Signature
+
+```haskell
+foldr :: (a -> b -> b) -> b -> [a] -> b
+```
+
+### Example (Sum)
+
+```haskell
+foldr (+) 0 [1,2,3,4]
+-- 10
+```
+
+### How It Works
+
+```
+1 + (2 + (3 + (4 + 0)))
+```
+
+---
+
+## 6. `foldl` — Reduce from the Left
+
+### Type Signature
+
+```haskell
+foldl :: (b -> a -> b) -> b -> [a] -> b
+```
+
+### Example
+
+```haskell
+foldl (+) 0 [1,2,3,4]
+-- 10
+```
+
+### How It Works
+
+```
+(((0 + 1) + 2) + 3) + 4
+```
+
+---
+
+## 7. Why `foldr` Is Important in Haskell
+
+Because Haskell is **lazy**:
+
+```haskell
+take 3 (foldr (:) [] [1..])
+-- [1,2,3]
+```
+
+`foldr` can work with **infinite lists**.
+
+---
+
+## 8. Returning Functions (Currying)
+
+In Haskell, **all functions return functions**.
+
+### Example
+
+```haskell
+add :: Int -> Int -> Int
+add x y = x + y
+```
+
+This is really:
+
+```haskell
+add :: Int -> (Int -> Int)
+```
+
+### Partial Application
+
+```haskell
+addFive :: Int -> Int
+addFive = add 5
+
+addFive 10   -- 15
+```
+
+---
+
+## 9. Function Composition
+
+### Operator
+
+```haskell
+(.) :: (b -> c) -> (a -> b) -> a -> c
+```
+
+### Example
+
+```haskell
+square :: Int -> Int
+square x = x * x
+
+double :: Int -> Int
+double x = x * 2
+
+(double . square) 3
+-- 18
+```
+
+---
+
+## 10. Building FP Pipelines (Haskell Style)
+
+```haskell
+process :: [Int] -> Int
+process =
+    foldr (+) 0
+  . filter even
+  . map (^2)
+```
+
+Use:
+
+```haskell
+process [1,2,3,4]
+-- 20
+```
+
+---
+
+## 11. Why This Is Pure FP
+
+✔ No loops
+✔ No mutable variables
+✔ No side effects
+✔ Only pure functions
+✔ Easy to reason about
+
+---
