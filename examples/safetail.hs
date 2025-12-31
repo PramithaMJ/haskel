@@ -10,7 +10,6 @@ safetail :: [a] -> [a]
 safetail [a] = []
 safetail (_:xs) = xs
 
-
 main :: IO ()
 main = do
   let num :: [Int]
