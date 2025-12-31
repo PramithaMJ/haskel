@@ -6,7 +6,7 @@ sorted xs = and [ x <= y | (x,y) <- pairs xs]
 
 main :: IO ()
 main = do
-  let n = [1, 2, 3, 4, 5]
+  let n = [1, 2, 5, 4, 6]
   let adjElement = pairs n
   putStrLn $ "Adjecent element: " ++ show adjElement
   let sortedArray = sorted n
